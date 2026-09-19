@@ -1,1 +1,27 @@
-const play=document.querySelector('#play');let playing=false;play?.addEventListener('click',()=>{playing=!playing;play.textContent=playing?'Ⅱ':'▶';document.querySelector('.wave').style.animation=playing?'pulse .7s infinite alternate':'none'});const s=document.createElement('style');s.textContent='@keyframes pulse{to{transform:scaleY(.55);opacity:.35}}';document.head.appendChild(s);
+const audio = document.getElementById('audio');
+const play = document.getElementById('play');
+const time = document.getElementById('time');
+
+play.addEventListener('click', () => {
+    if (audio.paused) {
+        audio.play();
+        play.textContent = 'Ⅱ';
+    } else {
+        audio.pause();
+        play.textContent = '▶';
+    }
+});
+
+audio.addEventListener('timeupdate', () => {
+    const minutes = Math.floor(audio.currentTime / 60);
+    const seconds = Math.floor(audio.currentTime % 60);
+
+    time.textContent =
+        String(minutes).padStart(2, '0') + ':' +
+        String(seconds).padStart(2, '0');
+});
+
+audio.addEventListener('ended', () => {
+    play.textContent = '▶';
+    time.textContent = '00:00';
+});
